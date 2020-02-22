@@ -88,7 +88,7 @@ public class MutantDog extends Animal
             }
             else {
                 // Overcrowding.
-                setDead();
+                //setDead();
             }
         }
     }

@@ -18,7 +18,7 @@ public class Darkseeker extends Animal
     // The age to which a Darkseeker can live.
     private static final int MAX_AGE = 150;
     // The likelihood of a Darkseeker breeding.
-    private static final double BREEDING_PROBABILITY = 0.15;
+    private static final double BREEDING_PROBABILITY = 0.5;
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 7;
     // The food value of a single Human. In effect, this is the
@@ -85,7 +85,7 @@ public class Darkseeker extends Animal
             }
             else {
                 // Overcrowding.
-                setDead();
+                //setDead();
             }
         }
     }
