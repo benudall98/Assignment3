@@ -14,13 +14,13 @@ public class MutantDog extends Animal
     // Characteristics shared by all MutantDogs (class variables).
     
     // The age at which a MutantDog can start to breed.
-    private static final int BREEDING_AGE = 5;
+    private static final int BREEDING_AGE = 3;
     // The age to which a MutantDog can live.
     private static final int MAX_AGE = 50;
     // The likelihood of a MutantDog breeding.
     private static final double BREEDING_PROBABILITY = 0.20;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 7;
+    private static final int MAX_LITTER_SIZE = 12;
     // The food value of a single Human. In effect, this is the
     // number of steps a MutantDog can go before it has to eat again.
     private static final int Human_FOOD_VALUE = 20;
@@ -74,7 +74,7 @@ public class MutantDog extends Animal
     {
         incrementAge();
         incrementHunger();
-        if(isAlive()&&isDay) {
+        if(isAlive()&&!isDay) {
             giveBirth(newMutantDogs);            
             // Move towards a source of food if found.
             Location newLocation = findFood();

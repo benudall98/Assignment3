@@ -4,36 +4,39 @@ import java.util.Random;
 import java.util.Iterator;
 
 /**
- * A simple model of a Dog.
- * Dogs age, move, breed, and die.
+ * A simple model of a InfectedHuman.
+ * InfectedHumans age, move, breed, and die.
  * 
  * @author David J. Barnes and Michael Kölling
  * @version 2016.02.29 (2)
  */
 public class InfectedHuman extends Animal
 {
-    // Characteristics shared by all Dogs (class variables).
+    // Characteristics shared by all InfectedHumans (class variables).
 
-    // The age at which a Dog can start to breed.
+    // The age at which a InfectedHuman can start to breed.
     private static final double INFECTION_PROBABILITY = 0.5;
-    // The age to which a Dog can live.
+    // The age to which a InfectedHuman can live.
     private static final int MAX_AGE = 100;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
+    
     // Individual characteristics (instance fields).
-    // The Dog's age.
+    
+    // The InfectedHuman's age.
     private int age;
-
+    //The number of steps a InfectedHuman can take before dying
     private static final int Human_FOOD_VALUE = 150;
+    //The probability that a new InfectedHuman is female
     private static final double FEMALE_PROBABILITY = 0.5; 
-
+    //The food level 
     private int foodLevel;
 
     /**
-     * Create a new Dog. A Dog may be created with age
+     * Create a new InfectedHuman. A InfectedHuman may be created with age
      * zero (a new born) or with a random age.
      * 
-     * @param randomAge If true, the Dog will have a random age.
+     * @param randomAge If true, the InfectedHuman will have a random age.
      * @param field The field currently occupied.
      * @param location The location within the field.
      */
@@ -44,7 +47,6 @@ public class InfectedHuman extends Animal
         if(randomAge) {
             age = rand.nextInt(MAX_AGE);
             foodLevel = rand.nextInt(Human_FOOD_VALUE);
-
         }
         if(rand.nextDouble() <= FEMALE_PROBABILITY) { 
             super.isFemale  = true; 
@@ -55,9 +57,9 @@ public class InfectedHuman extends Animal
     }
 
     /**
-     * This is what the Dog does most of the time - it runs 
+     * This is what the InfectedHuman does most of the time - it runs 
      * around. Sometimes it will breed or die of old age.
-     * @param newDogs A list to return newly born Dogs.
+     * @param newInfectedHumans A list to return newly InfectedHumans.
      */
     public void act(List<Animal> newInfectedHumans, boolean isDay)
     {
@@ -67,7 +69,7 @@ public class InfectedHuman extends Animal
             // returns the location of the non-infected human
             // infect that human (delete human in that location and create infectedHuman
             // move 'me' - the infected one - to other free location
-            Location newLocation = findFood(); 
+            Location newLocation = findHuman(); 
             if(newLocation != null){
                 foodLevel = Human_FOOD_VALUE;
                 Human nonInfected = (Human) getField().getObjectAt(newLocation);
@@ -88,7 +90,7 @@ public class InfectedHuman extends Animal
      * Only the first live Human is turned into an InfectedHuman.
      * @return Where a human was found, or null if it wasn't.
      */
-    private Location findFood()
+    private Location findHuman()
     {
         {
             List<Location> adjacent = getField().adjacentLocations(getLocation());
@@ -106,7 +108,7 @@ public class InfectedHuman extends Animal
 
     /**
      * Increase the age.
-     * This could result in the Dog's death.
+     * This could result in the InfectedHuman's death.
      */
     private void incrementAge()
     {
@@ -128,7 +130,8 @@ public class InfectedHuman extends Animal
     }
 
     /**
-     * 
+     * @param the list of newInfectedHumans being created
+     * Add the newly created InfectedHuman objects to the animals list
      */
     private void addInfected(List<Animal> newInfectedHumans)
     {
@@ -145,7 +148,7 @@ public class InfectedHuman extends Animal
     }
 
     /**
-     * 
+     * @return the acutal number of humans that will be infected by the infected human
      */
     private int infect()
     {
@@ -159,7 +162,10 @@ public class InfectedHuman extends Animal
         }
         return infections;
     }
-
+    
+    /**
+     * @return true or false if the animal in an adjacent cell is human
+     */
     private boolean canInfect() { 
 
         Field field = getField();
@@ -171,12 +177,14 @@ public class InfectedHuman extends Animal
             if(animal instanceof Human) {
                 Human human = (Human) animal;
                 return true;
-
             }
         }
         return false;
     }
-
+    
+    /**
+     * Move to an adjacent empty cell or otherwise die due to overcrowding
+     */
     private void move(){
         Location nextLocation = getField().freeAdjacentLocation(getLocation());
         if(nextLocation != null) {
@@ -187,7 +195,10 @@ public class InfectedHuman extends Animal
             setDead();
         }
     }
-
+    
+    /**
+     * @return Number of humans in adjacent cells who will come into contact with this infected human
+     */
     private int numberOfNonInfected(){
         int n = 0;
         int row = getLocation().getRow();

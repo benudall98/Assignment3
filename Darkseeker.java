@@ -12,7 +12,7 @@ import java.util.Random;
 public class Darkseeker extends Animal
 {
     // Characteristics shared by all Darkseekers (class variables).
-    
+
     // The age at which a Darkseeker can start to breed.
     private static final int BREEDING_AGE = 3;
     // The age to which a Darkseeker can live.
@@ -54,12 +54,12 @@ public class Darkseeker extends Animal
             foodLevel = Human_FOOD_VALUE;
         }
         if(rand.nextDouble() <= FEMALE_PROBABILITY) { 
-           super.isFemale  = true; 
+            super.isFemale  = true; 
         } else { 
             super.isFemale = false;                        
         } 
     }
-    
+
     /**
      * This is what the Darkseeker does most of the time: it hunts for
      * Humans. In the process, it might breed, die of hunger,
@@ -100,7 +100,7 @@ public class Darkseeker extends Animal
             setDead();
         }
     }
-    
+
     /**
      * Make this Darkseeker more hungry. This could result in the Darkseeker's death.
      */
@@ -111,7 +111,7 @@ public class Darkseeker extends Animal
             setDead();
         }
     }
-    
+
     /**
      * Look for Humans adjacent to the current location.
      * Only the first live Human is eaten.
@@ -136,7 +136,7 @@ public class Darkseeker extends Animal
         }
         return null;
     }
-    
+
     /**
      * Check whether or not this Darkseeker is to give birth at this step.
      * New births will be made into free adjacent locations.
@@ -155,7 +155,7 @@ public class Darkseeker extends Animal
             newDarkseekers.add(young);
         }
     }
-        
+
     /**
      * Generate a number representing the number of births,
      * if it can breed.
@@ -174,7 +174,6 @@ public class Darkseeker extends Animal
      * A Darkseeker can breed if it has reached the breeding age.
      */
     private boolean canBreed() { 
-    
         Field field = getField();
         List<Location> adjacent = field.adjacentLocations(getLocation());
         Iterator<Location> it = adjacent.iterator();
@@ -183,14 +182,12 @@ public class Darkseeker extends Animal
             Object animal = field.getObjectAt(where);
             if(animal instanceof Darkseeker) {
                 Darkseeker darkseeker = (Darkseeker) animal;
-        
                 if(age >= BREEDING_AGE && (darkseeker.getIsFemale() && !this.getIsFemale()) || (!darkseeker.getIsFemale() && this.getIsFemale()) ) {
-                return true; 
+                    return true; 
+                }
+            }
         }
-    }
-    }
-                return false;
-        
-        
+        return false;
+
     }
 }

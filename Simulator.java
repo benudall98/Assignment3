@@ -21,7 +21,7 @@ public class Simulator
     private static final int DEFAULT_DEPTH = 80;
     private static final int DEFAULT_DEPTH_Plants = 80;
     // The probability that a Darkseeker will be created in any given grid position.
-    private static final double Darkseeker_CREATION_PROBABILITY = 0.06;
+    private static final double Darkseeker_CREATION_PROBABILITY = 0.09;
     // The probability that a Human will be created in any given grid position.
     private static final double Human_CREATION_PROBABILITY = 0.04;    
     private static final double Dog_CREATION_PROBABILITY = 0.03;   
