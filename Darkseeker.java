@@ -14,13 +14,13 @@ public class Darkseeker extends Animal
     // Characteristics shared by all Darkseekers (class variables).
 
     // The age at which a Darkseeker can start to breed.
-    private static final int BREEDING_AGE = 3;
+    private static final int BREEDING_AGE = 20;
     // The age to which a Darkseeker can live.
     private static final int MAX_AGE = 150;
     // The likelihood of a Darkseeker breeding.
-    private static final double BREEDING_PROBABILITY = 0.3;
+    private static final double BREEDING_PROBABILITY = 0.8;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 3;
+    private static final int MAX_LITTER_SIZE = 4;
     // The food value of a single Human. In effect, this is the
     // number of steps a Darkseeker can go before it has to eat again.
     private static final int Human_FOOD_VALUE = 15;
@@ -79,14 +79,7 @@ public class Darkseeker extends Animal
                 // No food found - try to move to a free location.
                 newLocation = getField().freeAdjacentLocation(getLocation());
             }
-            // See if it was possible to move.
-            if(newLocation != null) {
-                setLocation(newLocation);
-            }
-            else {
-                // Overcrowding.
-                setDead();
-            }
+            move();
         }
     }
 
@@ -146,12 +139,11 @@ public class Darkseeker extends Animal
     {
         // New Darkseekers are born into adjacent locations.
         // Get a list of adjacent free locations.
-        Field field = getField();
-        List<Location> free = field.getFreeAdjacentLocations(getLocation());
+        List<Location> free = getField().getFreeAdjacentLocations(getLocation());
         int births = breed();
         for(int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
-            Darkseeker young = new Darkseeker(false, field, loc);
+            Darkseeker young = new Darkseeker(false, getField(), loc);
             newDarkseekers.add(young);
         }
     }
@@ -174,12 +166,11 @@ public class Darkseeker extends Animal
      * A Darkseeker can breed if it has reached the breeding age.
      */
     private boolean canBreed() { 
-        Field field = getField();
-        List<Location> adjacent = field.adjacentLocations(getLocation());
+        List<Location> adjacent = getField().adjacentLocations(getLocation());
         Iterator<Location> it = adjacent.iterator();
         while(it.hasNext()) {
             Location where = it.next();
-            Object animal = field.getObjectAt(where);
+            Object animal = getField().getObjectAt(where);
             if(animal instanceof Darkseeker) {
                 Darkseeker darkseeker = (Darkseeker) animal;
                 if(age >= BREEDING_AGE && (darkseeker.getIsFemale() && !this.getIsFemale()) || (!darkseeker.getIsFemale() && this.getIsFemale()) ) {
@@ -188,6 +179,5 @@ public class Darkseeker extends Animal
             }
         }
         return false;
-
     }
 }

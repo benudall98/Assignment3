@@ -14,9 +14,9 @@ public abstract class Animal
     private Field field;
     // The living-creature's position in the field.
     private Location location;
-    
+
     protected boolean isFemale; 
-    
+
     /**
      * Create a new living-creature at location in field.
      * 
@@ -29,7 +29,7 @@ public abstract class Animal
         this.field = field;
         setLocation(location);
     }
-    
+
     /**
      * Make this living-creature act - that is: make it do
      * whatever it wants/needs to do.
@@ -68,7 +68,7 @@ public abstract class Animal
     {
         return location;
     }
-    
+
     /**
      * Place the living-creature at the new location in the given field.
      * @param newLocation The living-creature's new location.
@@ -81,7 +81,7 @@ public abstract class Animal
         location = newLocation;
         field.place(this, newLocation);
     }
-    
+
     /**
      * Return the living-creature's field.
      * @return The living-creature's field.
@@ -90,8 +90,23 @@ public abstract class Animal
     {
         return field;
     }
-    
+
     protected boolean getIsFemale() { 
         return isFemale; 
     }
+
+    /**
+     * Move to an adjacent empty cell or otherwise die due to overcrowding
+     */
+    protected void move(){
+        Location nextLocation = getField().freeAdjacentLocation(getLocation());
+        if(nextLocation != null) {
+            setLocation(nextLocation);
+        }
+        else {
+            // Overcrowding.
+            setDead();
+        }
+    }
+
 }

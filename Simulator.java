@@ -16,10 +16,8 @@ public class Simulator
     // Constants representing configuration information for the simulation.
     // The default width for the grid.
     private static final int DEFAULT_WIDTH = 120;
-    private static final int DEFAULT_WIDTH_Plants = 100;
     // The default depth of the grid.
     private static final int DEFAULT_DEPTH = 80;
-    private static final int DEFAULT_DEPTH_Plants = 80;
     // The probability that a Darkseeker will be created in any given grid position.
     private static final double Darkseeker_CREATION_PROBABILITY = 0.09;
     // The probability that a Human will be created in any given grid position.
@@ -35,7 +33,7 @@ public class Simulator
     private int step;
     // A graphical view of the simulation.
     private SimulatorView view;
-    private SimulatorViewPlants viewPlants;
+
     private int stepCopy;
     private boolean isDay;
 
@@ -67,7 +65,6 @@ public class Simulator
 
         // Create a view of the state of each location in the field.
         view = new SimulatorView(depth, width);
-        //viewPlants = new SimulatorViewPlants(depth, width);
         view.setColor(Human.class, Color.GREEN);
         view.setColor(Darkseeker.class, Color.RED);
         view.setColor(Dog.class, Color.YELLOW); 
@@ -77,17 +74,7 @@ public class Simulator
         // Setup a valid starting point.
         reset();
     }
-    public Simulator(int depthPlants, int widthPlants, int sth)
-    {
-        if(widthPlants <= 0 || depthPlants <= 0) {
-            System.out.println("The dimensions must be greater than zero.");
-            System.out.println("Using default values.");
-            depthPlants = DEFAULT_DEPTH_Plants;
-            widthPlants = DEFAULT_WIDTH_Plants;
-            
-            viewPlants.setColor(Plants.class, Color.GREEN);
-        }
-    }
+    
 
     /**
      * Run the simulation from its current state for a reasonably long period,

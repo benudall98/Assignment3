@@ -44,12 +44,12 @@ public class Human extends Animal
             age = rand.nextInt(MAX_AGE);
         }
         if(rand.nextDouble() <= FEMALE_PROBABILITY) { 
-           super.isFemale  = true; 
+            super.isFemale  = true; 
         } else { 
             super.isFemale = false;                        
         } 
     }
-    
+
     /**
      * This is what the Human does most of the time - it runs 
      * around. Sometimes it will breed or die of old age.
@@ -61,14 +61,7 @@ public class Human extends Animal
         if(isAlive()&&(isDay)) {
             giveBirth(newHumans);            
             // Try to move into a free location.
-            Location newLocation = getField().freeAdjacentLocation(getLocation());
-            if(newLocation != null) {
-                setLocation(newLocation);
-            }
-            else {
-                // Overcrowding.
-                setDead();
-            }
+            move();
         }
     }
 
@@ -83,7 +76,7 @@ public class Human extends Animal
             setDead();
         }
     }
-    
+
     /**
      * Check whether or not this Human is to give birth at this step.
      * New births will be made into free adjacent locations.
@@ -102,7 +95,7 @@ public class Human extends Animal
             newHumans.add(young);
         }
     }
-        
+
     /**
      * Generate a number representing the number of births,
      * if it can breed.
@@ -122,7 +115,7 @@ public class Human extends Animal
      * @return true if the Human can breed, false otherwise.
      */
     private boolean canBreed() { 
-    
+
         Field field = getField();
         List<Location> adjacent = field.adjacentLocations(getLocation());
         Iterator<Location> it = adjacent.iterator();
@@ -131,24 +124,22 @@ public class Human extends Animal
             Object animal = field.getObjectAt(where);
             if(animal instanceof Human) {
                 Human human = (Human) animal;
-        
+
                 if(age >= BREEDING_AGE && (human.getIsFemale() && !this.getIsFemale()) || (!human.getIsFemale() && this.getIsFemale()) ) {
-                return true; 
+                    return true; 
+                }
+            }
         }
+        return false;
+
     }
-    }
-                return false;
-        
-        
-    }
-   
     private void setLocationDisease()
     {
-        
+
     }
-    
+
     private void checkDisease() {
         Location currentLocation = this.getLocation();
-        
+
     }
 }

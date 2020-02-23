@@ -12,7 +12,7 @@ import java.util.Random;
 public class MutantDog extends Animal
 {
     // Characteristics shared by all MutantDogs (class variables).
-    
+
     // The age at which a MutantDog can start to breed.
     private static final int BREEDING_AGE = 3;
     // The age to which a MutantDog can live.
@@ -24,7 +24,7 @@ public class MutantDog extends Animal
     // The food value of a single Human. In effect, this is the
     // number of steps a MutantDog can go before it has to eat again.
     private static final int Human_FOOD_VALUE = 20;
-    private static final int Dog_FOOD_VALUE = 9;
+    private static final int Dog_FOOD_VALUE = 20;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
     private static final double FEMALE_PROBABILITY = 0.5; 
@@ -48,21 +48,19 @@ public class MutantDog extends Animal
         super(field, location);
         if(randomAge) {
             age = rand.nextInt(MAX_AGE);
-            foodLevel = rand.nextInt(Human_FOOD_VALUE);
             foodLevel = rand.nextInt(Dog_FOOD_VALUE);
         }
         else {
             age = 0;
-            foodLevel = Human_FOOD_VALUE;
             foodLevel = Dog_FOOD_VALUE;
         }
         if(rand.nextDouble() <= FEMALE_PROBABILITY) { 
-           super.isFemale  = true; 
+            super.isFemale  = true; 
         } else { 
             super.isFemale = false;                        
         } 
     }
-    
+
     /**
      * This is what the MutantDog does most of the time: it hunts for
      * Humans. In the process, it might breed, die of hunger,
@@ -78,18 +76,21 @@ public class MutantDog extends Animal
             giveBirth(newMutantDogs);            
             // Move towards a source of food if found.
             Location newLocation = findFood();
-            if(newLocation == null) { 
-                // No food found - try to move to a free location.
-                newLocation = getField().freeAdjacentLocation(getLocation());
-            }
-            // See if it was possible to move.
             if(newLocation != null) {
-                setLocation(newLocation);
+                // either human or dog is found
+                Animal creature = (Animal) getField().getObjectAt(newLocation);
+                if(creature instanceof Human){
+                    Human human = (Human) creature;
+                    human.setDead();
+                    foodLevel += Human_FOOD_VALUE;
+                }
+                else{
+                    Dog dog = (Dog) creature;
+                    dog.setDead();
+                    foodLevel += Dog_FOOD_VALUE;
+                }
             }
-            else {
-                // Overcrowding.
-                //setDead();
-            }
+            move();
         }
     }
 
@@ -103,7 +104,7 @@ public class MutantDog extends Animal
             setDead();
         }
     }
-    
+
     /**
      * Make this MutantDog more hungry. This could result in the MutantDog's death.
      */
@@ -114,7 +115,7 @@ public class MutantDog extends Animal
             setDead();
         }
     }
-    
+
     /**
      * Look for Humans adjacent to the current location.
      * Only the first live Human is eaten.
@@ -122,33 +123,22 @@ public class MutantDog extends Animal
      */
     private Location findFood()
     {
-        Field field = getField();
-        List<Location> adjacent = field.adjacentLocations(getLocation());
+        List<Location> adjacent = getField().adjacentLocations(getLocation());
         Iterator<Location> it = adjacent.iterator();
         while(it.hasNext()) {
             Location where = it.next();
-            Object animal = field.getObjectAt(where);
+            Object animal = getField().getObjectAt(where);
             if(animal instanceof Human) {
-                Human Human = (Human) animal;
-                if(Human.isAlive()) { 
-                    Human.setDead();
-                    foodLevel = Human_FOOD_VALUE;
-                    return where;
-                }
+                return where;
             }
             else
             if(animal instanceof Dog) {
-                Dog dog = (Dog) animal;
-                if(dog.isAlive()) { 
-                    dog.setDead();
-                    foodLevel = Dog_FOOD_VALUE;
-                    return where;
-                }
+                return where;
             }
         }
         return null;
     }
-    
+
     /**
      * Check whether or not this MutantDog is to give birth at this step.
      * New births will be made into free adjacent locations.
@@ -167,7 +157,7 @@ public class MutantDog extends Animal
             newMutantDogs.add(young);
         }
     }
-        
+
     /**
      * Generate a number representing the number of births,
      * if it can breed.
@@ -184,9 +174,10 @@ public class MutantDog extends Animal
 
     /**
      * A MutantDog can breed if it has reached the breeding age.
+     * @return true if two adjacent animals are of the opposite sex and so can breed, otherwise false. 
      */
     private boolean canBreed() { 
-    
+
         Field field = getField();
         List<Location> adjacent = field.adjacentLocations(getLocation());
         Iterator<Location> it = adjacent.iterator();
@@ -195,14 +186,13 @@ public class MutantDog extends Animal
             Object animal = field.getObjectAt(where);
             if(animal instanceof MutantDog) {
                 MutantDog mutantDog = (MutantDog) animal;
-        
+
                 if(age >= BREEDING_AGE && (mutantDog.getIsFemale() && !this.getIsFemale()) || (!mutantDog.getIsFemale() && this.getIsFemale()) ) {
-                return true; 
+                    return true; 
+                }
+            }
         }
-    }
-    }
-                return false;
-        
-        
+        return false;
+
     }
 }

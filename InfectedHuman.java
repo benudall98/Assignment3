@@ -20,9 +20,9 @@ public class InfectedHuman extends Animal
     private static final int MAX_AGE = 100;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
-    
+
     // Individual characteristics (instance fields).
-    
+
     // The InfectedHuman's age.
     private int age;
     //The number of steps a InfectedHuman can take before dying
@@ -71,17 +71,13 @@ public class InfectedHuman extends Animal
             // move 'me' - the infected one - to other free location
             Location newLocation = findHuman(); 
             if(newLocation != null){
-                foodLevel = Human_FOOD_VALUE;
+                foodLevel += Human_FOOD_VALUE;
                 Human nonInfected = (Human) getField().getObjectAt(newLocation);
                 nonInfected.setDead();
                 InfectedHuman newInfected = new InfectedHuman(false, getField(), newLocation);
                 addInfected(newInfectedHumans);
-                newLocation = getField().freeAdjacentLocation(getLocation());
             }
             move();
-            // giveBirth(newInfectedHumans);            
-            // Try to move into a free location.
-
         }
     }
 
@@ -162,7 +158,7 @@ public class InfectedHuman extends Animal
         }
         return infections;
     }
-    
+
     /**
      * @return true or false if the animal in an adjacent cell is human
      */
@@ -181,21 +177,7 @@ public class InfectedHuman extends Animal
         }
         return false;
     }
-    
-    /**
-     * Move to an adjacent empty cell or otherwise die due to overcrowding
-     */
-    private void move(){
-        Location nextLocation = getField().freeAdjacentLocation(getLocation());
-        if(nextLocation != null) {
-            setLocation(nextLocation);
-        }
-        else {
-            // Overcrowding.
-            setDead();
-        }
-    }
-    
+
     /**
      * @return Number of humans in adjacent cells who will come into contact with this infected human
      */
