@@ -129,7 +129,7 @@ public class Darkseeker extends Animal
                 Human Human = (Human) animal;
                 if(Human.isAlive()) { 
                     Human.setDead();
-                    foodLevel = Human_FOOD_VALUE;
+                    foodLevel += Human_FOOD_VALUE;
                     return where;
                 }
             }

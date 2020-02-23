@@ -58,7 +58,7 @@ public class Human extends Animal
     public void act(List<Animal> newHumans, boolean isDay)
     {
         incrementAge();
-        if(isAlive()&&(isDay||!isDay)) {
+        if(isAlive()&&(isDay)) {
             giveBirth(newHumans);            
             // Try to move into a free location.
             Location newLocation = getField().freeAdjacentLocation(getLocation());

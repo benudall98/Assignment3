@@ -67,7 +67,7 @@ public class Simulator
 
         // Create a view of the state of each location in the field.
         view = new SimulatorView(depth, width);
-        viewPlants = new SimulatorViewPlants(depth, width);
+        //viewPlants = new SimulatorViewPlants(depth, width);
         view.setColor(Human.class, Color.GREEN);
         view.setColor(Darkseeker.class, Color.RED);
         view.setColor(Dog.class, Color.YELLOW); 
