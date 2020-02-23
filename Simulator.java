@@ -26,7 +26,7 @@ public class Simulator
     private static final double Human_CREATION_PROBABILITY = 0.04;    
     private static final double Dog_CREATION_PROBABILITY = 0.03;   
     private static final double MutantDog_CREATION_PROBABILITY = 0.06;
-    private static final double Disease_CREATION_PROBABILITY = 0.01;
+    private static final double Disease_CREATION_PROBABILITY = 0.005;
     // List of animals in the field.
     private List<Animal> animals;
     // The current state of the field.
