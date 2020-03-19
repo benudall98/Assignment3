@@ -1,4 +1,5 @@
-Project: foxes-and-rabbits-v2
+# Project: foxes-and-rabbits-v2
+
 Authors: Michael Kölling and David J. Barnes and Benedict Udall and Eliza Bujor
 
 Part of this project is part of the material for chapter 10 of the book
